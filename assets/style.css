@@ -137,6 +137,7 @@ header {
 	position: absolute;
 	bottom: 40px;
 	display: flex;
+
 }
 .dot {
 	margin-inline: 5px;
