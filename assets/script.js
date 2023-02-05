@@ -1,21 +1,27 @@
 const slides = [
 	{
-		"image":".asset/slide1.jpg",
+		"image":"./assets/images/slideshow/slide1.jpg",
 		"tagLine":"Impressions tous formats <span>en boutique et en ligne</span>"
 	},
 	{
-		"image":"slide2.jpg",
+		"image":"./assets/images/slideshow/slide2.jpg",
 		"tagLine":"Tirages haute définition grand format <span>pour vos bureaux et events</span>"
 	},
 	{
-		"image":"slide3.jpg",
+		"image":"./assets/images/slideshow/slide3.jpg",
 		"tagLine":"Grand choix de couleurs <span>de CMJN aux pantones</span>"
 	},
 	{
-		"image":"slide4.png",
+		"image":"./assets/images/slideshow/slide4.jpg",
 		"tagLine":"Autocollants <span>avec découpe laser sur mesure</span>"
 	}
 ]
+
+
+
+
+
+
 
 var flechegauche = document.querySelector('.arrow_left') ;
 
@@ -39,11 +45,28 @@ console.log("nombre de bullet point : "+nbpoint);
 
 
 
+
+
+
+
 var points = document.querySelector('.dots');
-for (let i=0 ; i<nbpoint; i++){
+var caroussel= document.querySelector("#banner");
+
+
+for (let i=0 ; i<nbpoint; i++){		
+	//Selon le nombre de points, on cree le meme nombre de div avec la class dot puis on l'ajoute au parent qui est dots
 	var point = document.createElement("div");
 	point.classList.add("dot");
 	points.appendChild(point);
+
+	var image = document.createElement("img");
+	image.classList.add("banner-img");
+	image.setAttribute("src",slides[i].image);
+	caroussel.appendChild(image);
+
 }
+
+
+
 
 
