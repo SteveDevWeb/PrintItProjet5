@@ -14,7 +14,7 @@ const slides = [
 	{
 		"image":"./assets/images/slideshow/slide4.jpg",
 		"tagLine":"Autocollants <span>avec découpe laser sur mesure</span>"
-	},
+	},	
 ]
 
 
@@ -23,40 +23,77 @@ const slides = [
 
 
 /////////// Config des points ///////////
-//Le nombre de points s'adapte au nombre d'images dans le tableau "slides"
 
-var nbpoint = slides.length; 
-console.log("nombre de bullet point : "+nbpoint);
-
-var points = document.querySelector('.dots');
-
-for (let i=0 ; i<nbpoint; i++){		
-	//Selon le nombre de points, on cree le meme nombre de div avec la class dot puis on l'ajoute au parent qui est dots
-	var point = document.createElement("div");
-	point.classList.add("dot");
-	points.appendChild(point);
+function nbofdots(tab) {
+	return(tab.length)
 }
+
+function Createdots(DOMelt,tab) {
+	for (let i=0 ; i<nbofdots(tab); i++){		
+		let point = document.createElement("div");  //Selon la taille du tableau, on crée autant de div 
+		point.classList.add("dot");  //On leur ajoute la class dot
+		DOMelt.appendChild(point);  //On ajoute l'élément en tant qu'enfant de DOMelt
+		console.log(nbofdots(slides) +' points ont été créés');
+	}
+}
+
+Createdots(document.querySelector('.dots'),slides)  //on appelle la fonction pour créer les points
+
+
+
+
+
+
+
+
+const banniere = document.querySelector("#banner")
+const dot=document.querySelector('.dots')
+var position=0 //La position va nous servir à savoir on l'on se situe dans le caroussel
+console.log("position = "+position)
+
+
+
+//////////////////////////////////// Fonctions ////////////////////////////////////
+
+function SetImage(DOMelt, tabelt) {
+	let image = document.createElement("img"); //On crée une balise img
+	image.classList.add("banner-img"); //On lui ajoute la class "banner-img"
+	image.setAttribute("src",tabelt.image); //On lui met comme attribut src = slides[0].image, cad la propriété image du premier element du tableau slides( qui est le chemin relatif de l'image)
+	DOMelt.appendChild(image); //On attribut a la div #banner l'enfant image qu'on vient de créer
+}	
+
+function SetText(DOMelt, tabelt) {
+	let text = document.createElement("p"); //Idem pour la balise p
+	text.innerHTML= tabelt.tagLine
+	DOMelt.appendChild(text)
+}
+
+function SetDotSelected(DOMelt) {
+	DOMelt.classList.add("dot_selected")  //On ajoute la class dot_selected
+} 
+ 
+function SetSlide(DOMbanner,DOMdot,tab, tabelt) {
+	SetImage(DOMbanner,tabelt)
+	SetText(DOMbanner,tabelt)
+	SetDotSelected(DOMdot)
+}
+
+function RemoveSlide(DOMelt,DOMdot) {
+	DOMelt.removeChild(document.querySelector('.banner-img'));  //On supprime la balise image
+	DOMelt.removeChild(document.querySelector('p'));  //On supprime le texte
+	DOMdot.classList.remove('dot_selected')
+} 
+
+
+
 
 
 
 
 /////////Configuration de départ///////////
 
-var caroussel= document.querySelector("#banner");
 
-var image = document.createElement("img"); //On crée une balise img
-image.classList.add("banner-img"); //On lui ajoute la class "banner-img"
-image.setAttribute("src",slides[0].image); //On lui met comme attribut src = slides[0].image, cad la propriété image du premier element du tableau slides( qui est le chemin relatif de l'image)
-caroussel.appendChild(image); //On attribut a la div #banner l'enfant image qu'on vient de créer
-
-var text = document.createElement("p"); //Idem pour la balise p
-text.innerHTML= slides[0].tagLine;
-caroussel.appendChild(text);
-
-var initialdot = document.querySelector('.dots :nth-child(1)'); //On active le premier dot
-initialdot.classList.add("dot_selected");
-
-var position=1; //La position va nous servir à savoir on l'on se situe dans le caroussel
+SetSlide(banniere,dot.children[0],slides,slides[0])
 
 
 
@@ -65,58 +102,40 @@ var position=1; //La position va nous servir à savoir on l'on se situe dans le 
 
 ///////// Les Event Listener sur les boutons //////////
 
-var flechegauche = document.querySelector('.arrow_left') ;
+const flechegauche = document.querySelector('.arrow_left') ;
 
 flechegauche.addEventListener("click",function(e){
-		if(position==1){
+	RemoveSlide(banniere, dot.children[position])
+		if(position==0){
 			console.log("Gauche");
-			position=slides.length; //Si on est au premier slide et qu'on fait clic vers la gauche, on arrive a la derniere slide donc la position prend pas 0 mais le nombre de slide
-			initialdot.classList.remove("dot_selected");
-			initialdot = document.querySelector('.dots :last-child'); //On se déplace pas sur l'enfant précédent mais le dernier
-			initialdot.classList.add("dot_selected");
+			position=slides.length-1; //Si on est au premier slide et qu'on fait clic vers la gauche, on arrive a la derniere slide donc la position prend pas 0 mais le nombre de slide
 			console.log("position = "+position);
-			image.setAttribute("src",slides[position-1].image);
-			text.innerHTML= slides[position-1].tagLine;
-
+			SetSlide(banniere,dot.children[position],slides,slides[position])
 		}else{
 			console.log("Gauche");
-			initialdot.classList.remove("dot_selected"); //On retire le dot actif
-			initialdot = initialdot.previousElementSibling; //On se place sur l'enfant précédent
-			initialdot.classList.add("dot_selected"); //On ajoute à l'enfant précédent la class dot selected pour que le point soit actif
-			position-=1; //La position diminue de 1
+			position-=1; 
 			console.log("position = "+position);
-			image.setAttribute("src",slides[position-1].image); //L'attribut src de la balise img se met a jour
-			text.innerHTML= slides[position-1].tagLine; //Idem pour le text
+			SetSlide(banniere,dot.children[position],slides,slides[position])
 		}
 	}
-);
+)
 
 
 
-var flechedroite = document.querySelector('.arrow_right') ;
+const flechedroite = document.querySelector('.arrow_right') ;
 
 flechedroite.addEventListener("click",function(e){
-		if(position==slides.length){
+	RemoveSlide(banniere, dot.children[position])
+		if(position==slides.length-1){
 			console.log("Droite");
-			position=1;
-			initialdot.classList.remove("dot_selected");
-			initialdot = document.querySelector('.dots :first-child');
-			initialdot.classList.add("dot_selected");
+			position=0; //Si on est au dernier slide et qu'on fait clic vers la droite, on arrive a la premiere slide donc la position prend le nombre de slide
 			console.log("position = "+position);
-			image.setAttribute("src",slides[position-1].image);
-			text.innerHTML= slides[position-1].tagLine;
+			SetSlide(banniere,dot.children[position],slides,slides[position])
 		}else{
 			console.log("Droite");
-			initialdot.classList.remove("dot_selected");
-			initialdot = initialdot.nextElementSibling;
-			initialdot.classList.add("dot_selected");
 			position+=1;
 			console.log("position = "+position);
-			image.setAttribute("src",slides[position-1].image);
-			text.innerHTML= slides[position-1].tagLine;
+			SetSlide(banniere,dot.children[position],slides,slides[position])
 		}
 	} 
-);
-
-
-
+)
