@@ -105,9 +105,9 @@ flechegauche.addEventListener("click",function(e){
 			//console.log("position = "+position)
 			setSlide(banniere,dot.children[position],slides,slides[position])
 		}else{
-			console.log("Gauche")
+			//console.log("Gauche")
 			position-=1 
-			console.log("position = "+position)
+			//console.log("position = "+position)
 			setSlide(banniere,dot.children[position],slides,slides[position])
 		}
 	}
@@ -122,12 +122,12 @@ flechedroite.addEventListener("click",function(e){
 		if(position==slides.length-1){
 			//console.log("Droite")
 			position=0 //Si on est au dernier slide et qu'on fait clic vers la droite, on arrive a la premiere slide donc la position prend le nombre de slide
-			console.log("position = "+position)
+			//console.log("position = "+position)
 			setSlide(banniere,dot.children[position],slides,slides[position])
 		}else{
-			console.log("Droite");
-			//position+=1
-			console.log("position = "+position)
+			//console.log("Droite");
+			position+=1
+			//console.log("position = "+position)
 			setSlide(banniere,dot.children[position],slides,slides[position])
 		}
 	} 
