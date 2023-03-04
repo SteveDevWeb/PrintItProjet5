@@ -33,7 +33,6 @@ function createDots(DOMelt,tab){
 		let point = document.createElement("div")  //Selon la taille du tableau, on crée autant de div 
 		point.classList.add("dot")  //On leur ajoute la class dot
 		DOMelt.appendChild(point)  //On ajoute l'élément en tant qu'enfant de DOMelt
-		//console.log(nbOfDots(slides) +' points ont été créés')
 	}
 }
 
@@ -45,7 +44,6 @@ createDots(document.querySelector('.dots'),slides)  //on appelle la fonction pou
 const banniere = document.querySelector("#banner")
 const dot=document.querySelector('.dots')
 var position=0 //La position va nous servir à savoir on l'on se situe dans le caroussel
-//console.log("position = "+position)
 
 
 
@@ -99,19 +97,9 @@ const flechegauche = document.querySelector('.arrow_left') ;
 
 flechegauche.addEventListener("click",function(e){
 	removeSlide(banniere, dot.children[position])
-		if(position==0){
-			//console.log("Gauche")
-			position=slides.length-1 //Si on est au premier slide et qu'on fait clic vers la gauche, on arrive a la derniere slide donc la position prend pas 0 mais le nombre de slide
-			//console.log("position = "+position)
-			setSlide(banniere,dot.children[position],slides,slides[position])
-		}else{
-			//console.log("Gauche")
-			position-=1 
-			//console.log("position = "+position)
-			setSlide(banniere,dot.children[position],slides,slides[position])
-		}
-	}
-)
+	position = (position==0) ? position=slides.length-1 : position-1; //Si on est au premier slide et qu'on fait clic vers la gauche, on arrive a la derniere slide donc la position prend pas 0 mais le nombre de slide
+	setSlide(banniere,dot.children[position],slides,slides[position])
+})
 
 
 
@@ -119,16 +107,6 @@ const flechedroite = document.querySelector('.arrow_right') ;
 
 flechedroite.addEventListener("click",function(e){
 	removeSlide(banniere, dot.children[position])
-		if(position==slides.length-1){
-			//console.log("Droite")
-			position=0 //Si on est au dernier slide et qu'on fait clic vers la droite, on arrive a la premiere slide donc la position prend le nombre de slide
-			//console.log("position = "+position)
-			setSlide(banniere,dot.children[position],slides,slides[position])
-		}else{
-			//console.log("Droite");
-			position+=1
-			//console.log("position = "+position)
-			setSlide(banniere,dot.children[position],slides,slides[position])
-		}
-	} 
-)
+	position = (position==slides.length-1) ? 0 : position+1;     //Si on est au dernier slide et qu'on fait clic vers la droite, on arrive a la premiere slide donc la position prend le nombre de slide
+	setSlide(banniere,dot.children[position],slides,slides[position])
+})
